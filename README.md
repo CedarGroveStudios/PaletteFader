@@ -1,6 +1,6 @@
 # Cedar Grove Palette Fader
 
-### _A work-in-progress displayio color palette and color list brightness setting and normalizer tool._
+### _A work-in-progress CircuitPython displayio color palette and color list brightness setting and normalizer tool._
 
 ## Overview
 
