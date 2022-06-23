@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-06-20 JG for Cedar Grove Maker Studios
+# SPDX-FileCopyrightText: 2022-06-23 JG for Cedar Grove Maker Studios
 #
 # SPDX-License-Identifier: MIT
 #
@@ -46,10 +46,10 @@ fader_control = AnalogIn(board.A0)
 # Instantiate NeoPixel (just in case it's needed)
 pixel = neopixel.NeoPixel(board.NEOPIXEL, 1)
 
-# Instantiate RGB LED display panel
+# Instantiate RGB LED matrix display panel
 matrix = Matrix(bit_depth=DISPLAY_BIT_DEPTH)  # default is 2; maximum is 6
 
-display = DisplayGraphics(
+matrix_display = DisplayGraphics(
     matrix.display,
     brightness=DISPLAY_BRIGHTNESS,
     gamma=DISPLAY_GAMMA,
@@ -61,7 +61,7 @@ scroll_refresh_time = None
 while True:
     # Update the on-screen information every 10 seconds (and on first run)
     if (not info_refresh_time) or (time.monotonic() - info_refresh_time) > 10:
-        display.update_info()
+        matrix_display.update_info()
         info_refresh_time = time.monotonic()
 
     # Scroll the description every SCROLL_DELAY seconds (and on first run)
@@ -69,17 +69,17 @@ while True:
     if (not scroll_refresh_time) or (
         time.monotonic() - scroll_refresh_time
     ) > SCROLL_DELAY:
-        display.scroll_desc()
+        matrix_display.scroll_desc()
         scroll_refresh_time = time.monotonic()
 
         if not button_up.value:
-            display.brightness = min(display.brightness + 0.01, 1.0)
-            print(f"display brightness: {display.brightness:0.2f}")
+            matrix_display.brightness = min(matrix_display.brightness + 0.01, 1.0)
+            print(f"matrix_display brightness: {matrix_display.brightness:0.2f}")
         if not button_down.value:
-            display.brightness = max(display.brightness - 0.01, 0.00)
-            print(f"display brightness: {display.brightness:0.2f}")
+            matrix_display.brightness = max(matrix_display.brightness - 0.01, 0.00)
+            print(f"matrix_display brightness: {matrix_display.brightness:0.2f}")
 
         if ANALOG_FADER:
-            display.brightness = map_range(fader_control.value, 300, 54000, 0.00, 1.0)
-            # print(f"fader_control.value: {fader_control.value:6.0f}")
-            print(f"display brightness : {display.brightness:6.3f}")
+            #print(f"fader_control.value: {fader_control.value:6.0f}")
+            matrix_display.brightness = map_range(fader_control.value, 300, 54000, 0.00, 1.0)
+            print(f"matrix_display brightness : {matrix_display.brightness:6.3f}")

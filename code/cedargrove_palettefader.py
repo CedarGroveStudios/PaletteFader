@@ -37,8 +37,6 @@ __repo__ = "https://github.com/CedarGroveStudios/Palette_Fader.git"
 from ulab import numpy
 import displayio
 
-import time
-
 
 class PaletteFader:
     """Displayio palette fader with normalization, brightness (fading), and
@@ -55,23 +53,28 @@ class PaletteFader:
         self._gamma = gamma
         self._normalize = normalize
 
+        self._list_transparency = []  # List of transparent items in a color list
+
         # Create the reference palette with separated source palette RGB values
         self._ref_palette = numpy.zeros((len(self._src_palette), 3), dtype=numpy.uint8)
         for index, color in enumerate(self._src_palette):
-            rgb = int(self._src_palette[index])
+            rgb = self._src_palette[index]
             if rgb is not None:
                 self._ref_palette[index, 2] = rgb & 0x0000FF
                 self._ref_palette[index, 1] = (rgb & 0x00FF00) >> 8
                 self._ref_palette[index, 0] = (rgb & 0xFF0000) >> 16
             else:
-                self._ref_palette[index] = [None, None, None]
+                # Store black in reference palette and note the index of the None value
+                self._ref_palette[index] = [0, 0, 0]
+                self._list_transparency.append(index)
 
         # Find the brighest RGB palette component for normalization
         if self._normalize:
             self._ref_palette_max = numpy.max(self._ref_palette)
         else:
             self._ref_palette_max = 0xFF
-        self._new_palette = self.fade_normalize()
+        self.fade_normalize()
+
 
     @property
     def brightness(self):
@@ -80,9 +83,9 @@ class PaletteFader:
 
     @brightness.setter
     def brightness(self, new_brightness):
-        if new_brightness != self._brightness:
+        if self._brightness != new_brightness:
             self._brightness = new_brightness
-            self._new_palette = self.fade_normalize()
+            self.fade_normalize()
 
     @property
     def gamma(self):
@@ -93,7 +96,7 @@ class PaletteFader:
 
     @property
     def normalize(self):
-        """The palette's normalization mode state; True to normalize."""
+        """The palette's normalization mode state; Normalize is True."""
         return self._normalize
 
     @property
@@ -110,22 +113,22 @@ class PaletteFader:
         # Determine the normalization factor to apply to the palette
         self._norm_factor = round((0xFF / self._ref_palette_max) * self._brightness, 3)
 
-        # If needed, normalize from the reference palette
-        if self._norm_factor != 1.000 or self._gamma != 1.0:
-            self._new_palette = self._src_palette  # Preserves transparency values
-            norm_palette = numpy.array(
-                self._ref_palette * self._norm_factor, dtype=numpy.uint8
-            )
-            norm_palette = numpy.array(norm_palette**self._gamma, dtype=numpy.uint8)
+        self._new_palette = self._src_palette  # Preserves transparency association
+        norm_palette = numpy.array(
+            self._ref_palette * self._norm_factor, dtype=numpy.uint8
+        )
+        norm_palette = numpy.array(norm_palette**self._gamma, dtype=numpy.uint8)
 
-            # Build new_palette with the newly normalized changes
-            for i, color in enumerate(norm_palette):
+        # Build new_palette with the newly normalized changes
+        for i, color in enumerate(norm_palette):
+            if i in self._list_transparency:
+                self._new_palette[i] = None
+            else:
                 self._new_palette[i] = (
                     (norm_palette[i, 0] << 16)
                     + (norm_palette[i, 1] << 8)
                     + norm_palette[i, 2]
                 )
-        return self._new_palette
 
 
 def set_color_brightness(self, source_color, brightness=1.0, gamma=1.0):

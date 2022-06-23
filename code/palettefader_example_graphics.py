@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-06-20 JG for Cedar Grove Maker Studios
+# SPDX-FileCopyrightText: 2022-06-23 JG for Cedar Grove Maker Studios
 #
 # SPDX-License-Identifier: MIT
 #
@@ -186,7 +186,7 @@ class DisplayGraphics(displayio.Group):
     @brightness.setter
     def brightness(self, new_brightness=1.0):
         """Adjust brightness of all display objects; text colors and weather icon."""
-        if new_brightness != self._brightness:
+        if True:
             self._brightness = new_brightness
 
             # Adjust colors and palettes; hide if brightness is < 0.04
