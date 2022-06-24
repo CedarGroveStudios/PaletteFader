@@ -40,13 +40,13 @@ import displayio
 
 class PaletteFader:
     """Displayio palette fader with normalization, brightness (fading), and
-    gamma control. Returns an adjusted displayio palette object."""
+    gamma control. Creates an adjusted displayio palette object."""
 
     def __init__(self, source_palette, brightness=1.0, gamma=1.0, normalize=False):
         """Instantiate the palette fader. Creates a reference numpy array
-        containing RGB values derived from the source palette. The palette's
-        brightest RGB component value is determined for use by the normalize
-        function, if enabled."""
+        containing separated RGB component values derived from the source
+        palette. The palette's brightest RGB component value is found for
+        subsequent use by the PaletteFader.fade_normalize() function."""
 
         self._src_palette = source_palette
         self._brightness = brightness
@@ -64,7 +64,7 @@ class PaletteFader:
                 self._ref_palette[index, 1] = (rgb & 0x00FF00) >> 8
                 self._ref_palette[index, 0] = (rgb & 0xFF0000) >> 16
             else:
-                # Store black in reference palette and note the index of the None value
+                # Store black in reference palette and capture the index of the None value
                 self._ref_palette[index] = [0, 0, 0]
                 self._list_transparency.append(index)
 
@@ -74,7 +74,6 @@ class PaletteFader:
         else:
             self._ref_palette_max = 0xFF
         self.fade_normalize()
-
 
     @property
     def brightness(self):
