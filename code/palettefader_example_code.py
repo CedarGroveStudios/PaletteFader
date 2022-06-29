@@ -80,8 +80,6 @@ while True:
             print(f"matrix_display brightness: {matrix_display.brightness:0.2f}")
 
         if ANALOG_FADER:
-            # print(f"fader_control.value: {fader_control.value:6.0f}")
-            matrix_display.brightness = map_range(
-                fader_control.value, 300, 54000, 0.00, 1.0
-            )
+            #print(f"fader_control.value: {fader_control.value:6.0f}")
+            matrix_display.brightness = map_range(fader_control.value, 300, 54000, 0.00, 1.0)
             print(f"matrix_display brightness : {matrix_display.brightness:6.3f}")

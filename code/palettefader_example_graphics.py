@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-06-23 JG for Cedar Grove Maker Studios
+# SPDX-FileCopyrightText: 2022-06-29 JG for Cedar Grove Maker Studios
 #
 # SPDX-License-Identifier: MIT
 #
@@ -25,7 +25,7 @@ TEAL    = 0x008080  # other stuff
 
 # Define display parameters
 DISPLAY_FONT       = terminalio.FONT
-ICON_SPRITESHEET   = "weather-icons0.bmp"
+ICON_SPRITESHEET   = "weather-icons.bmp"
 ICON_SPRITE_WIDTH  = 16
 ICON_SPRITE_HEIGHT = 16
 # fmt: on
@@ -52,13 +52,13 @@ class DisplayGraphics(displayio.Group):
 
         # Load a background image and create a source_color palette for fader control
         bkg_bitmap, bkg_palette_source = adafruit_imageload.load(
-            "loading0.bmp", bitmap=displayio.Bitmap, palette=displayio.Palette
+            "background.bmp", bitmap=displayio.Bitmap, palette=displayio.Palette
         )
         # Adjust palette colors in proportion to brightness setting
-        bkg_faded = PaletteFader(
+        bkg_palette_norm = PaletteFader(
             bkg_palette_source, self._brightness - 0.2, gamma=0.65, normalize=True
         )
-        bkg_tile = displayio.TileGrid(bkg_bitmap, pixel_shader=bkg_faded.palette)
+        bkg_tile = displayio.TileGrid(bkg_bitmap, pixel_shader=bkg_palette_norm.palette)
 
         self._bkg_group = displayio.Group()
         self._bkg_group.append(bkg_tile)
@@ -88,12 +88,12 @@ class DisplayGraphics(displayio.Group):
         self.icons_palette_source.make_transparent(0)
 
         # Instantiate icon palette normalizer object and adjust
-        self.icon_faded = PaletteFader(
+        self.icon_normal = PaletteFader(
             self.icons_palette_source, self._brightness, gamma=1.0, normalize=True
         )
         self._icon_sprite_tile = displayio.TileGrid(
             icon_spritesheet,
-            pixel_shader=self.icon_faded.palette,
+            pixel_shader=self.icon_normal.palette,
             tile_width=ICON_SPRITE_WIDTH,
             tile_height=ICON_SPRITE_HEIGHT,
         )
@@ -140,7 +140,7 @@ class DisplayGraphics(displayio.Group):
         self._text_group.append(self.wind_text)
         self._text_group_colors_source.append(self.wind_text.color)
 
-        self._text_group_faded = PaletteFader(
+        self._text_group_palette_norm = PaletteFader(
             self._text_group_colors_source, self._brightness, gamma=1.0, normalize=False
         )
 
@@ -195,17 +195,21 @@ class DisplayGraphics(displayio.Group):
                 self._text_group.hidden = False
 
                 # Adjust brightness of colors of the displayio text group
-                self._text_group_faded.brightness = self._brightness
+                self._text_group_palette_norm.brightness = self._brightness
 
                 for i in range(len(self._text_group)):
                     if hasattr(self._text_group[i], "color"):
-                        self._text_group[i].color = self._text_group_faded.palette[i]
+                        self._text_group[
+                            i
+                        ].color = self._text_group_palette_norm.palette[i]
                     elif hasattr(self._text_group[i], "fill"):
-                        self._text_group[i].fill = self._text_group_faded.palette[i]
+                        self._text_group[
+                            i
+                        ].fill = self._text_group_palette_norm.palette[i]
 
-                # Adjust the icon TileGrid palette brightness and refresh it
-                self.icon_faded.brightness = self._brightness
-                self._icon_sprite_tile.pixel_shader = self.icon_faded.palette
+                # Adjust the icon palette brightness and refresh it
+                self.icon_normal.brightness = self._brightness
+                self._icon_sprite_tile.pixel_shader = self.icon_normal.palette
             else:
                 self._icon_group.hidden = True
                 self._text_group.hidden = True
