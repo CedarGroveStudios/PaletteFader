@@ -4,7 +4,7 @@
 
 ## Overview
 
-The PaletteFader class was originally developed for the RGB LED matrix of the Adafruit MatrixPortal due to the lack of hardware support for display brightness. Although not tested on other devices, the class is expected to be compatible with any displayio graphics application.
+Due to the lack of hardware support for display brightness, the PaletteFader class was developed for controlling the RGB LED matrix panel display attached to an Adafruit MatrixPortal. Although not tested on other devices, the class is expected to be compatible with any displayio graphics application.
 
 Since PaletteFader adjusts brightness by recalculating displayio color values rather than directly controlling brightness in the hardware, it can be somewhat complicated to incorporate into CircuitPython code. Use with bitmap images and spritesheets is fairly straightforward. Other displayio objects such as shapes and labels requires that a color list be created and managed. Due to limitations of certain displayio object color modules, color parameters such as outlines cannot be managed with this tool; only displayio object color and fill parameters are supported at this time.
 
