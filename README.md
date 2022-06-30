@@ -8,7 +8,7 @@ The PaletteFader class was originally developed for the RGB LED matrix of the Ad
 
 Since PaletteFader adjusts brightness by recalculating displayio color values rather than directly controlling brightness in the hardware, it can be somewhat complicated to incorporate into CircuitPython code. Use with bitmap images and spritesheets is fairly straightforward. Other displayio objects such as shapes and labels requires that a color list be created and managed. Due to limitations of certain displayio object color modules, color parameters such as outlines cannot be managed with this tool; only displayio object color and fill parameters are supported at this time.
 
-See the _palettefader_simpletest.py_ in the examples folder for detail about how to use PaletteFader.
+See the _palettefader_simpletest.py_ in the _examples_ folder for detail about how to use PaletteFader.
 
 Creation of this class is also intended to be a CircuitPython-based proof-of-concept to inspire the development of a similay algorithm deep within the confines of the displayio core module. Stay tuned to this channel to see if the plot takes a turn in that direction.
 
