@@ -11,7 +11,7 @@ https://github.com/CedarGroveStudios/Palette_Fader/blob/main/docs/pseudo%20readt
 
 ![Overview](https://github.com/CedarGroveStudios/Palette_Fader/blob/main/docs/PaletteFader_Class_description.jpeg)
 
-![Internals](https://github.com/CedarGroveStudios/Palette_Fader/blob/main/docs/PaletteFader_Class_description.jpeg)
+![Internals](https://github.com/CedarGroveStudios/Palette_Fader/blob/main/docs/PaletteFader_Class_internals.jpeg)
 
 This repo currently consists of an example using the PaletteFader class.
 
