@@ -15,8 +15,8 @@ Creation of this class is also intended to be a CircuitPython-based proof-of-con
 CedarGrove PaletteFader API Class Description:
 https://github.com/CedarGroveStudios/Palette_Fader/blob/main/docs/pseudo%20readthedocs%20cedargrove_palettefader.pdf
 
-![Overview](https://github.com/CedarGroveStudios/Palette_Fader/blob/main/docs/PaletteFader_Class_description.jpeg)
+![Overview](https://github.com/CedarGroveStudios/PaletteFader/blob/main/docs/PaletteFader_Class_description.jpeg)
 
-![Internals](https://github.com/CedarGroveStudios/Palette_Fader/blob/main/docs/PaletteFader_Class_internals.jpeg)
+![Internals](https://github.com/CedarGroveStudios/PaletteFader/blob/main/docs/PaletteFader_Class_internals.jpeg)
 
 ![Image of Module](https://github.com/CedarGroveStudios/Matrix_Weather/blob/main/photos_and_graphics/matrix_weather.jpeg)
