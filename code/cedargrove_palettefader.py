@@ -54,13 +54,10 @@ class PaletteFader:
           displayio palette object. No default.
         :param float brightness: The brightness value for palette adjustment.
           Value range is 0.0 to 1.0. Default is 1.0 (maximum brightness).
-        :param float gamma: The gamma value for palette adjstment. Value range
+        :param float gamma: The gamma value for palette adjustment. Value range
           is 0.0 to 2.0. Default is 1.0 (no gamma adjustment).
         :param bool normalize: The boolean normalization state. True to normalize;
-          False to skip normalization. Default is False (no normalization).
-
-        :return displayio.Palette PaletteFader.palette: The adjusted palette
-           object."""
+          False to skip normalization. Default is False (no normalization)."""
 
         self._src_palette = source_palette
         self._brightness = brightness
@@ -111,7 +108,8 @@ class PaletteFader:
 
     @property
     def normalize(self):
-        """The palette's normalization mode state; Normalize is True."""
+        """The palette's normalization mode state; True for normalization
+        applied; False for no normalization."""
         return self._normalize
 
     @property
@@ -125,7 +123,7 @@ class PaletteFader:
         adjusted palette. The reference palette is first adjusted for
         brightness and normalization (if enabled), followed by the gamma
         adjustment. Transparency index values are preserved."""
-        
+
         # Determine the normalization factor to apply to the palette
         self._norm_factor = round((0xFF / self._ref_palette_max) * self._brightness, 3)
 
