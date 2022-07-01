@@ -10,7 +10,7 @@ Since PaletteFader adjusts brightness by recalculating displayio color values ra
 
 See the _palettefader_simpletest.py_ in the _examples_ folder for detail about how to use PaletteFader.
 
-Creation of this class is also intended to be a CircuitPython-based proof-of-concept to inspire the development of a similay algorithm deep within the confines of the displayio core module. Stay tuned to this channel to see if the plot takes a turn in that direction.
+Creation of this class is also intended to be a CircuitPython-based proof-of-concept to inspire the development of a similar algorithm deep within the confines of the displayio core module. Stay tuned to this channel to see if the plot takes a turn in that direction.
 
 CedarGrove PaletteFader API Class Description:
 https://github.com/CedarGroveStudios/PaletteFader/blob/main/docs/pseudo%20readthedocs%20cedargrove_palettefader.pdf
