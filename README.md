@@ -19,10 +19,10 @@ https://github.com/CedarGroveStudios/PaletteFader/blob/main/docs/pseudo%20readth
 
 ![Internals](https://github.com/CedarGroveStudios/PaletteFader/blob/main/docs/PaletteFader_Class_internals.jpeg)
 
-### Matrix Weather Project example:
-https://github.com/CedarGroveStudios/Matrix_Weather
+### Matrix Weather Station Project example:
+https://github.com/CedarGroveStudios/MatrixWeather
 
-![MatrixWeather](https://github.com/CedarGroveStudios/Matrix_Weather/blob/main/photos_and_graphics/matrix_weather.jpeg)
+![MatrixWeather](https://github.com/CedarGroveStudios/MatrixWeather/blob/main/photos_and_graphics/matrix_weather.jpeg)
 
 
 ### Snowman Project example:
