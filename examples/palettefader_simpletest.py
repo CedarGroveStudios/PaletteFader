@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022-06-29 JG for Cedar Grove Maker Studios
+# SPDX-FileCopyrightText: 2022-07-23 JG for Cedar Grove Maker Studios
 #
 # SPDX-License-Identifier: MIT
 #
@@ -22,6 +22,7 @@ from simpleio import map_range
 from adafruit_matrixportal.matrix import Matrix
 from adafruit_display_text.label import Label
 from adafruit_display_shapes.rect import Rect
+from adafruit_display_shapes.circle import Circle
 import adafruit_imageload
 from cedargrove_palettefader import PaletteFader
 
@@ -54,9 +55,11 @@ display.rotation = 270  # Portrait orientation; MatrixPortal USB connect on bott
 DISPLAY_CENTER   = (display.width // 2, display.height // 2)
 # fmt: on
 
-# Define display groups
+# Define the primary display group
 root_group = displayio.Group()
-text_group = displayio.Group()  # Need to create a grouping of items that have no palette
+
+# Create a group of items with hidden palettes to share a single color list
+text_group = displayio.Group()
 
 # Load the background image and source color palette
 bkg_bitmap, bkg_palette_source = adafruit_imageload.load(
@@ -95,10 +98,8 @@ root_group.append(icon_tile)
 # This is a color list that acts like a palette for the text group
 text_colors_source = []
 
-watchdog = Rect(0, 0, 3, 3)
-watchdog.fill = FUCHSIA
+watchdog = Rect(0, 0, 5, 5, fill=FUCHSIA, outline=AQUA, stroke=1)
 text_group.append(watchdog)
-text_colors_source.append(watchdog.fill)
 
 # Define the text labels. Add an attribute for the group items palette.
 temperature = Label(terminalio.FONT)
@@ -106,14 +107,17 @@ temperature.anchor_point = (0.5, 0.5)
 temperature.anchored_position = (DISPLAY_CENTER[0], 14)
 temperature.color = YELLOW
 text_group.append(temperature)
-text_colors_source.append(temperature.color)
 
 humidity = Label(terminalio.FONT)
 humidity.anchor_point = (0.5, 0.5)
 humidity.anchored_position = (DISPLAY_CENTER[0], 45)
 humidity.color = AQUA
 text_group.append(humidity)
-text_colors_source.append(humidity.color)
+
+# Place all group objects' ._palette contents into the text_colors_source list
+for i in range(len(text_group)):
+    for j in range(len(text_group[i]._palette)):
+        text_colors_source.append(text_group[i]._palette[j])
 
 root_group.append(text_group)
 
@@ -146,11 +150,11 @@ while True:
 
         # Update text group color list based on DISPLAY_BRIGHTNESS value
         text_colors.brightness = DISPLAY_BRIGHTNESS
+        text_colors_index = 0
         for i in range(len(text_group)):
-            if hasattr(text_group[i], "color"):
-                text_group[i].color = text_colors.palette[i]
-            if hasattr(text_group[i], "fill"):
-                text_group[i].fill = text_colors.palette[i]
+            for j in range(len(text_group[i]._palette)):
+                text_group[i]._palette[j] = text_colors.palette[text_colors_index]
+                text_colors_index += 1
 
         # Update icon palette
         icon_faded.brightness = DISPLAY_BRIGHTNESS
