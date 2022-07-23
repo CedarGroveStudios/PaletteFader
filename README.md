@@ -4,13 +4,13 @@
 
 ## Overview
 
-Due to the lack of hardware support for display brightness, the PaletteFader class was developed for controlling the RGB LED matrix panel display attached to an Adafruit MatrixPortal. Although not tested on other devices, the class is expected to be compatible with any displayio graphics application.
+Due to the lack of hardware support for display brightness, the *PaletteFader* class was developed for controlling the RGB LED matrix panel display attached to an Adafruit MatrixPortal. Although not tested on other devices, the class is expected to be compatible with any `displayio` graphics application.
 
-Since PaletteFader adjusts brightness by recalculating displayio color values rather than directly controlling brightness in the hardware, it can be somewhat complicated to incorporate into CircuitPython code. Use with bitmap images and spritesheets is fairly straightforward. Other displayio objects such as shapes and labels requires that a color list be created and managed. Due to limitations of certain displayio object color modules, color parameters such as outlines cannot be managed with this tool; only displayio object color and fill parameters are supported at this time.
+Since PaletteFader adjusts brightness by recalculating displayio color values rather than directly controlling brightness in the hardware, it can be somewhat complicated to incorporate into CircuitPython code. Use with bitmap images and spritesheets is fairly straightforward. Other displayio objects such as shapes and labels requires that a color list be created from the objects' hidden palettes.
 
 See the _palettefader_simpletest.py_ in the _examples_ folder for PaletteFader usage.
 
-Creation of this class is also intended to be a CircuitPython-based proof-of-concept to inspire the development of a similar algorithm deep within the confines of the displayio core module. Stay tuned to this channel to see if the plot takes a turn in that direction.
+Creation of this class is also intended to be a CircuitPython-based proof-of-concept to inspire the development of a similar algorithm deep within the confines of the displayio core module, perhaps to awaken the `brightness` parameter of `framebufferio` or within `displayio.Palette` or `displayio.TileGrid`. Stay tuned to this channel to see if the plot takes a turn in that direction.
 
 ### CedarGrove PaletteFader API Class Description:
 https://github.com/CedarGroveStudios/PaletteFader/blob/main/docs/pseudo%20readthedocs%20cedargrove_palettefader.pdf
