@@ -6,7 +6,7 @@
 
 Due to missing (and very difficult to implement) hardware support for display brightness, the __PaletteFader__ class was developed for controlling the RGB LED matrix panel display attached to an Adafruit MatrixPortal. The class is also compatible with other `displayio` graphics applications, helpful for individually controlling object brightness.
 
-Since __PaletteFader__ adjusts brightness by recalculating `displayio` color values rather than directly controlling brightness with hardware such as TFT display backlights, it can be somewhat complicated to incorporate into CircuitPython code. Use with bitmap images and spritesheets is fairly straightforward. Other `displayio` objects such as shapes and labels require the creation of a single, collective color list from each object's hidden palette -- usually much simpler than creating a __PaletteFader__ object for each.
+Since __PaletteFader__ adjusts brightness by recalculating `displayio` color values rather than directly controlling brightness with hardware such as TFT display backlights, it can be somewhat complicated to incorporate into CircuitPython code. Use with bitmap images and spritesheets is fairly straightforward. Other `displayio` and `vectorio` objects such as shapes and labels require the creation of a single, collective color list from the object's explicit or hidden palette -- usually much simpler than creating a __PaletteFader__ object for each, however.
 
 See the _palettefader_simpletest.py_ in the _examples_ folder for PaletteFader usage.
 
