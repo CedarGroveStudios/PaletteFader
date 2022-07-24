@@ -1,21 +1,21 @@
 # SPDX-FileCopyrightText: 2022-07-23 JG for Cedar Grove Maker Studios
-#
 # SPDX-License-Identifier: MIT
 #
 # palettefader_simpletest.py
 
 """
 This is a PaletteFader class example for an Adafruit MatrixPortal with a
-32x64 RGB LED display panel. Two text labels, a shape, and an icon spritesheet
-tile are placed on the display in a layer over a background image. The Matrix
-Portal's analog voltage input on pin A0 controls the text layer brightness over
-the fixed-brightness background image.
+32x64 RGB LED display panel. Two text labels, a displayio shape, a vectorio
+shape, and an icon spritesheet tile are placed on the display in a layer over a
+background image. The Matrix Portal's analog voltage input on pin A0 controls
+the text layer brightness over the fixed-brightness background image.
 """
 
 import time
 import board
 from analogio import AnalogIn
 import displayio
+import vectorio
 import random
 import terminalio
 from simpleio import map_range
@@ -95,9 +95,10 @@ icon_tile.x = DISPLAY_CENTER[0] - 8
 icon_tile.y = 22
 root_group.append(icon_tile)
 
-# This is a color list that acts like a palette for the text group
+# This is a color list for the text group
 text_colors_source = []
 
+# Place a displayio display_shapes rectangle in the upper left corner
 watchdog = Rect(0, 0, 5, 5, fill=FUCHSIA, outline=AQUA, stroke=1)
 text_group.append(watchdog)
 
@@ -114,10 +115,22 @@ humidity.anchored_position = (DISPLAY_CENTER[0], 45)
 humidity.color = AQUA
 text_group.append(humidity)
 
-# Place all group objects' ._palette contents into the text_colors_source list
+# Place a vectorio circle in the upper right corner
+sun_palette = displayio.Palette(1)
+sun_palette[0] = YELLOW
+sun = vectorio.Circle(pixel_shader=sun_palette, radius=8, x=30, y=0)
+text_group.append(sun)
+
+# Place all group object ._palette and .pixel_shader contents into the color list
 for i in range(len(text_group)):
-    for j in range(len(text_group[i]._palette)):
-        text_colors_source.append(text_group[i]._palette[j])
+    if hasattr(text_group[i], '_palette'):
+        # A displayio display_shapes or display_text object
+        for j in range(len(text_group[i]._palette)):
+            text_colors_source.append(text_group[i]._palette[j])
+    elif hasattr(text_group[i], 'pixel_shader'):
+        # A vectorio object
+        for j in range(len(text_group[i].pixel_shader)):
+            text_colors_source.append(text_group[i].pixel_shader[j])
 
 root_group.append(text_group)
 
@@ -142,19 +155,26 @@ while True:
         info_refresh_time = time.monotonic()
 
     # Update color list and palettes with fader values every 1 second (and first run)
-    if (not fader_refresh_time) or (time.monotonic() - fader_refresh_time) > 1:
+    if (not fader_refresh_time) or (time.monotonic() - fader_refresh_time) > 0.1:
 
         if ANALOG_FADER:
             # Read the potentiometer and calculate a new brightness value
             DISPLAY_BRIGHTNESS = int(map_range(fader_control.value, 300, 54000, 5, 100)) / 100
 
-        # Update text group color list based on DISPLAY_BRIGHTNESS value
+        # Update text group ._palette and .pixel_shader based on DISPLAY_BRIGHTNESS value
         text_colors.brightness = DISPLAY_BRIGHTNESS
         text_colors_index = 0
         for i in range(len(text_group)):
-            for j in range(len(text_group[i]._palette)):
-                text_group[i]._palette[j] = text_colors.palette[text_colors_index]
-                text_colors_index += 1
+            if hasattr(text_group[i], '_palette'):
+                # A displayio display_shapes or display_text object
+                for j in range(len(text_group[i]._palette)):
+                    text_group[i]._palette[j] = text_colors.palette[text_colors_index]
+                    text_colors_index += 1
+            elif hasattr(text_group[i], 'pixel_shader'):
+                # A vectorio object
+                for j in range(len(text_group[i].pixel_shader)):
+                    text_group[i].pixel_shader[j] = text_colors.palette[text_colors_index]
+                    text_colors_index += 1
 
         # Update icon palette
         icon_faded.brightness = DISPLAY_BRIGHTNESS
